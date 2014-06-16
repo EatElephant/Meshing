@@ -1,6 +1,6 @@
 /****************************************************************************
 Author:    Bailin Li
-Brief:     Load a point cloud from a pcd file
+Brief:     Load a point cloud from a text file
 		   Creating triangular meshing from the point cloud
 		   Visualize the meshing result
 *****************************************************************************/
@@ -25,14 +25,27 @@ main (int argc, char** argv)
 	  cout << "Usage:" << argv[0] << " [PCD file name to load]" << endl;
 	  return -1;
   }
+
   // Load input file into a PointCloud<T> with an appropriate type
   int ret;
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  if(pcl::io::loadPCDFile (argv[1], *cloud)!=0)
+  ifstream ifile(argv[1]);
+  if(!ifile.is_open())
   {
-	  cout << "ERROR:fail to find pcd file!!" << endl;
+	  cout << "ERROR:fail to find point cloud file!!" << endl;
 	  return -1;
   }
+
+  //Create PointCloud based on the data in text file
+  double x, y, z;
+  string delim;
+  while(ifile)
+  {
+
+	  ifile >> x >> y >> z;
+	  cloud->points.push_back(pcl::PointXYZ(x,y,z));
+  }
+	  
   //* the data should be available in cloud
 
   // Normal estimation*
@@ -60,7 +73,7 @@ main (int argc, char** argv)
   pcl::PolygonMesh triangles;
 
   // Set the maximum distance between connected points (maximum edge length)
-  gp3.setSearchRadius (0.5);
+  gp3.setSearchRadius (10);
 
   // Set typical values for the parameters
   gp3.setMu (2.5);
