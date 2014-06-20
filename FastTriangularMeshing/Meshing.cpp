@@ -1,6 +1,7 @@
 /****************************************************************************
 Author:    Bailin Li
 Brief:     Load a point cloud from a pcd file
+		   Smooth the pointcloud using MovingLeastSquare method
 		   Creating triangular meshing from the point cloud
 		   Visualize the meshing result
 *****************************************************************************/
@@ -11,6 +12,7 @@ Brief:     Load a point cloud from a pcd file
 #include <pcl/kdtree/kdtree_flann.h>
 #include <pcl/features/normal_3d.h>
 #include <pcl/surface/gp3.h>
+#include <pcl/surface/mls.h>
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/io/vtk_io.h>
 #include <iostream>
@@ -35,6 +37,31 @@ main (int argc, char** argv)
   }
   //* the data should be available in cloud
 
+  //smooth pointcloud and get cloud with normal info
+  // Create a KD-Tree
+  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
+  
+  //output cloud of mls method
+  pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
+  
+  // Init object (second point type is for the normals, even if unused)
+  pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+ 
+  mls.setComputeNormals (true);
+
+  mls.setInputCloud (cloud);
+  mls.setPolynomialFit (true);
+  mls.setSearchMethod (tree);
+  mls.setSearchRadius (1);
+
+  // Reconstruct
+  mls.process (*cloud_with_normals);
+  
+  //end of mls method
+  //cloud_with_normals is the ouput smoothed cloud with normal info
+
+
+  /* This part is skipped because of using of mls method to get cloud_with_normals
   // Normal estimation*
   pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
   pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
@@ -50,6 +77,8 @@ main (int argc, char** argv)
   pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
   pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
   //* cloud_with_normals = cloud + normals
+  */
+
 
   // Create search tree*
   pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
@@ -60,11 +89,11 @@ main (int argc, char** argv)
   pcl::PolygonMesh triangles;
 
   // Set the maximum distance between connected points (maximum edge length)
-  gp3.setSearchRadius (0.5);
+  gp3.setSearchRadius (1);
 
   // Set typical values for the parameters
   gp3.setMu (2.5);
-  gp3.setMaximumNearestNeighbors (50);
+  gp3.setMaximumNearestNeighbors (150);
   gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
   gp3.setMinimumAngle(M_PI/18); // 10 degrees
   gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
