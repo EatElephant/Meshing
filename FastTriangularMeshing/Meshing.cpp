@@ -42,47 +42,44 @@ main (int argc, char** argv)
   pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
   
   //output cloud of mls method
-  pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
+  pcl::PointCloud<pcl::PointXYZ>::Ptr cloud_smoothed (new pcl::PointCloud<pcl::PointXYZ>);
   
   // Init object (second point type is for the normals, even if unused)
-  pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointNormal> mls;
+  pcl::MovingLeastSquares<pcl::PointXYZ, pcl::PointXYZ> mls;
  
-  mls.setComputeNormals (true);
+  mls.setComputeNormals (false);
 
   mls.setInputCloud (cloud);
   mls.setPolynomialFit (true);
   mls.setSearchMethod (tree);
   mls.setSearchRadius (1);
 
-  // Reconstruct
-  mls.process (*cloud_with_normals);
+  // Smooth
+  mls.process (*cloud_smoothed);
   
   //end of mls method
-  //cloud_with_normals is the ouput smoothed cloud with normal info
+  //cloud_smoothed is the ouput smoothed cloud without normal info
 
-
-  /* This part is skipped because of using of mls method to get cloud_with_normals
-  // Normal estimation*
+  // Normal estimation
   pcl::NormalEstimation<pcl::PointXYZ, pcl::Normal> n;
   pcl::PointCloud<pcl::Normal>::Ptr normals (new pcl::PointCloud<pcl::Normal>);
-  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree (new pcl::search::KdTree<pcl::PointXYZ>);
-  tree->setInputCloud (cloud);
-  n.setInputCloud (cloud);
-  n.setSearchMethod (tree);
+  pcl::search::KdTree<pcl::PointXYZ>::Ptr tree2 (new pcl::search::KdTree<pcl::PointXYZ>);
+  tree2->setInputCloud (cloud_smoothed);
+  n.setInputCloud (cloud_smoothed);
+  n.setSearchMethod (tree2);
   n.setKSearch (20);
   n.compute (*normals);
-  //* normals should not contain the point normals + surface curvatures
 
-  // Concatenate the XYZ and normal fields*
+  // Concatenate the XYZ and normal fields
   pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
-  pcl::concatenateFields (*cloud, *normals, *cloud_with_normals);
-  //* cloud_with_normals = cloud + normals
-  */
+  pcl::concatenateFields (*cloud_smoothed, *normals, *cloud_with_normals);
+  // cloud_with_normals = cloud_smoothed + normals
+  
 
 
-  // Create search tree*
-  pcl::search::KdTree<pcl::PointNormal>::Ptr tree2 (new pcl::search::KdTree<pcl::PointNormal>);
-  tree2->setInputCloud (cloud_with_normals);
+  // Create search tree
+  pcl::search::KdTree<pcl::PointNormal>::Ptr tree3 (new pcl::search::KdTree<pcl::PointNormal>);
+  tree3->setInputCloud (cloud_with_normals);
 
   // Initialize objects
   pcl::GreedyProjectionTriangulation<pcl::PointNormal> gp3;
@@ -98,10 +95,11 @@ main (int argc, char** argv)
   gp3.setMinimumAngle(M_PI/18); // 10 degrees
   gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
   gp3.setNormalConsistency(false);
+  gp3.setConsistentVertexOrdering(true);
 
   // Get result
   gp3.setInputCloud (cloud_with_normals);
-  gp3.setSearchMethod (tree2);
+  gp3.setSearchMethod (tree3);
   gp3.reconstruct (triangles);
 
   // Additional vertex information
@@ -110,7 +108,7 @@ main (int argc, char** argv)
 
   //Visualize Mesh result
   pcl::visualization::PCLVisualizer viewer("Mesh Visualizer");
-  viewer.addPointCloud(cloud, "Cloud");
+  viewer.addPointCloud(cloud_smoothed, "Cloud");
   viewer.addPolygonMesh(triangles,"Triangular Mesh");
 
   pcl::io::saveVTKFile ("mesh.vtk", triangles);
