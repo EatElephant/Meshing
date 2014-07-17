@@ -1,4 +1,7 @@
 <<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> readtxt
 
 
 
@@ -32,7 +35,11 @@
     <meta name="selected-link" value="repo_source" data-pjax-transient />
       <meta name="google-analytics" content="UA-3769691-2">
 
+<<<<<<< HEAD
     <meta content="collector.githubapp.com" name="octolytics-host" /><meta content="collector-cdn.github.com" name="octolytics-script-host" /><meta content="github" name="octolytics-app-id" /><meta content="98B3B502:6289:508E629:53A49403" name="octolytics-dimension-request_id" /><meta content="3487041" name="octolytics-actor-id" /><meta content="EatElephant" name="octolytics-actor-login" /><meta content="f5ba44b6e839f3fb4972116f201b7ac77a1a0375894dd92ef4dc18cf1f486560" name="octolytics-actor-hash" />
+=======
+    <meta content="collector.githubapp.com" name="octolytics-host" /><meta content="collector-cdn.github.com" name="octolytics-script-host" /><meta content="github" name="octolytics-app-id" /><meta content="98B3B502:01FD:DD1A87E:53A494AE" name="octolytics-dimension-request_id" /><meta content="3487041" name="octolytics-actor-id" /><meta content="EatElephant" name="octolytics-actor-login" /><meta content="f5ba44b6e839f3fb4972116f201b7ac77a1a0375894dd92ef4dc18cf1f486560" name="octolytics-actor-hash" />
+>>>>>>> readtxt
     
 
     
@@ -41,7 +48,11 @@
 
 
     <meta content="authenticity_token" name="csrf-param" />
+<<<<<<< HEAD
 <meta content="UFLUN0WBTP5P83xQ1sMpKGP51HDGUzInJJaxdmhNws8hbZLpeYSlgGQQoIN1dFxQaFrluxpf0V/gOs5yJY1isg==" name="csrf-token" />
+=======
+<meta content="nPOSfp7O/vuacIGRKfQgsTQv/JpzZe9WQPA12Kc71tW+kvG+repKNiRHLwmgUH5oVTSdhtt/G22iqKoACqS4jQ==" name="csrf-token" />
+>>>>>>> readtxt
 
     <link href="https://assets-cdn.github.com/assets/github-26c7cdac8c5ba3b7dcb80ef2e9ad5563e60f4390.css" media="all" rel="stylesheet" type="text/css" />
     <link href="https://assets-cdn.github.com/assets/github2-2345d96807d22c825b0bd5b0bc7d2d2291cc1933.css" media="all" rel="stylesheet" type="text/css" />
@@ -224,7 +235,11 @@
 <ul class="pagehead-actions">
 
     <li class="subscription">
+<<<<<<< HEAD
       <form accept-charset="UTF-8" action="/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="1popkpn+1J3R1/xQxaaMXVnZkK/JkmyHLbmDJCxzMu3DPRo67IV0E3MdA4DL76dGWxhNBiX4gMYomt/UpUOq7A==" /></div>  <input id="repository_id" name="repository_id" type="hidden" value="20818420" />
+=======
+      <form accept-charset="UTF-8" action="/notifications/subscribe" class="js-social-container" data-autosubmit="true" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="Ls3A4BbBVm0wxDyOvgbcwnPb1Yoyn55AK9f3Q6PV1wZtTSLECg+rYxudf2mLeSTFSQGshE7mJKeVMUR+O/h86A==" /></div>  <input id="repository_id" name="repository_id" type="hidden" value="20818420" />
+>>>>>>> readtxt
 
     <div class="select-menu js-menu-container js-select-menu">
       <a class="social-count js-social-count" href="/EatElephant/Meshing/watchers">
@@ -299,7 +314,11 @@
 
   <div class="js-toggler-container js-social-container starring-container ">
 
+<<<<<<< HEAD
     <form accept-charset="UTF-8" action="/EatElephant/Meshing/unstar" class="js-toggler-form starred" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="inBbB/2GsgllFbNlzEItM2BPtW50EDQPRWgR5ENU5qfJ+F5Cu+kp2xYhzfux10m5tqBc7agHZ2bOQdI26RYQ2w==" /></div>
+=======
+    <form accept-charset="UTF-8" action="/EatElephant/Meshing/unstar" class="js-toggler-form starred" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="cpWGoshpOkoE7zfztxE5WUPoNuULw9umfAjGU5Xxpd0g29BJMKh4Eece8VdgCiC+TRodQsqyqmH8F6PKdnUf6A==" /></div>
+>>>>>>> readtxt
       <button
         class="minibutton with-count js-toggler-target star-button"
         aria-label="Unstar this repository" title="Unstar EatElephant/Meshing">
@@ -310,7 +329,11 @@
           0
         </a>
 </form>
+<<<<<<< HEAD
     <form accept-charset="UTF-8" action="/EatElephant/Meshing/star" class="js-toggler-form unstarred" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="lMmmZ5urcjQdHtfLFtqPEO2Mn/CA/C7Cnf93I1b2YyGCE7lNU1r/cXTuGES/uD/EdWPx7AjnyrA+zvOLU7aV+w==" /></div>
+=======
+    <form accept-charset="UTF-8" action="/EatElephant/Meshing/star" class="js-toggler-form unstarred" data-remote="true" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="5R5lB+98jML9bD9Cf/m+g2hujMO84WL+spfovFfkPbGIbXcT/6mgx6FCS+fi4VSYf1w3uBEh6bRp7ItFlox+Zw==" /></div>
+>>>>>>> readtxt
       <button
         class="minibutton with-count js-toggler-target star-button"
         aria-label="Star this repository" title="Star EatElephant/Meshing">
@@ -576,7 +599,11 @@
             </div> <!-- /.select-menu-item -->
         </div>
 
+<<<<<<< HEAD
           <form accept-charset="UTF-8" action="/EatElephant/Meshing/branches" class="js-create-branch select-menu-item select-menu-new-item-form js-navigation-item js-new-item-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="VbXe5KEsr5lnJeJlHVOsgDr+Kmw7lxwWCzDILeFNaMwVhfwADEE3Ptvyh3y2z6N3NVIh4TUocJPx3WIVdbfyjw==" /></div>
+=======
+          <form accept-charset="UTF-8" action="/EatElephant/Meshing/branches" class="js-create-branch select-menu-item select-menu-new-item-form js-navigation-item js-new-item-form" method="post"><div style="margin:0;padding:0;display:inline"><input name="authenticity_token" type="hidden" value="KD2otjgTudFa2uQ1lefHu7O1XZYXd/LDn3Gagj/0u7OzsRj8H2ZcEajT2TWrGaI8vsx8xOaIV7P/wwmx09A1WA==" /></div>
+>>>>>>> readtxt
             <span class="octicon octicon-git-branch select-menu-item-icon"></span>
             <div class="select-menu-item-text">
               <h4>Create branch: <span class="js-new-item-name"></span></h4>
@@ -736,7 +763,11 @@
     </a>
 
     <ul class="site-footer-links">
+<<<<<<< HEAD
       <li>&copy; 2014 <span title="0.05634s from github-fe126-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+=======
+      <li>&copy; 2014 <span title="0.05068s from github-fe117-cp1-prd.iad.github.net">GitHub</span>, Inc.</li>
+>>>>>>> readtxt
         <li><a href="/site/terms">Terms</a></li>
         <li><a href="/site/privacy">Privacy</a></li>
         <li><a href="/security">Security</a></li>
@@ -780,6 +811,7 @@
   </body>
 </html>
 
+<<<<<<< HEAD
 =======
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
@@ -802,3 +834,5 @@ Global
 	EndGlobalSection
 EndGlobal
 >>>>>>> smooth
+=======
+>>>>>>> readtxt

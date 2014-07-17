@@ -1,6 +1,7 @@
 /****************************************************************************
 Author:    Bailin Li
-Brief:     Load a point cloud from a pcd file
+<<<<<<< HEAD
+Brief:     Load a point cloud from a pcd file or text file
 		   Smooth the pointcloud using MovingLeastSquare method
 		   Creating triangular meshing from the point cloud
 		   Visualize the meshing result
@@ -24,17 +25,37 @@ main (int argc, char** argv)
 {
   if(argc != 2)
   {
-	  cout << "Usage:" << argv[0] << " [PCD file name to load]" << endl;
+	  cout << "Usage:" << argv[0] << " [XYZ file name to load]" << "[mode 0 for read pcd file, 1 for read xyz file]" << endl;
 	  return -1;
   }
+
   // Load input file into a PointCloud<T> with an appropriate type
   int ret;
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  if(pcl::io::loadPCDFile (argv[1], *cloud)!=0)
+  ifstream ifile(argv[1]);
+  if(!ifile.is_open())
   {
-	  cout << "ERROR:fail to find pcd file!!" << endl;
+	  cout << "ERROR:fail to find point cloud file!!" << endl;
 	  return -1;
   }
+
+  //Create PointCloud based on the data in text file
+  if(argv[2] == '1')
+  {
+	  double x, y, z;
+	  while(ifile)
+	  {
+
+		  ifile >> x >> y >> z;
+		  cloud->points.push_back(pcl::PointXYZ(x,y,z));
+	  }
+  }
+  else if(argv[2] == '0')
+  {
+	
+  }
+	  
+	  
   //* the data should be available in cloud
 
   //smooth pointcloud and get cloud with normal info
@@ -86,7 +107,7 @@ main (int argc, char** argv)
   pcl::PolygonMesh triangles;
 
   // Set the maximum distance between connected points (maximum edge length)
-  gp3.setSearchRadius (1);
+  gp3.setSearchRadius (10);
 
   // Set typical values for the parameters
   gp3.setMu (2.5);
