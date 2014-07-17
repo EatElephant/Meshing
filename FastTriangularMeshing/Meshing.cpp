@@ -17,31 +17,32 @@ Brief:     Load a point cloud from a pcd file or text file
 #include <pcl/visualization/pcl_visualizer.h>
 #include <pcl/io/vtk_io.h>
 #include <iostream>
+#include <windows.h>
 
 using namespace std;
 
 int
 main (int argc, char** argv)
 {
-  if(argc != 2)
+  if(argc != 3)
   {
-	  cout << "Usage:" << argv[0] << " [XYZ file name to load]" << "[mode 0 for read pcd file, 1 for read xyz file]" << endl;
+	  cout << "Usage:" << argv[0] << " [XYZ file name to load]" << " [mode 0 for read pcd file, 1 for read xyz file]" << endl;
 	  return -1;
   }
 
   // Load input file into a PointCloud<T> with an appropriate type
   int ret;
   pcl::PointCloud<pcl::PointXYZ>::Ptr cloud (new pcl::PointCloud<pcl::PointXYZ>);
-  ifstream ifile(argv[1]);
-  if(!ifile.is_open())
+  
+  if(atoi(argv[2]) == 1)//Create PointCloud based on the data in text file
   {
-	  cout << "ERROR:fail to find point cloud file!!" << endl;
-	  return -1;
-  }
+	  ifstream ifile(argv[1]);
+	  if(!ifile.is_open())
+	  {
+		  cout << "ERROR:fail to find xyz file!!" << endl;
+		  return -1;
+	  }
 
-  //Create PointCloud based on the data in text file
-  if(argv[2] == '1')
-  {
 	  double x, y, z;
 	  while(ifile)
 	  {
@@ -50,11 +51,22 @@ main (int argc, char** argv)
 		  cloud->points.push_back(pcl::PointXYZ(x,y,z));
 	  }
   }
-  else if(argv[2] == '0')
+  else if(atoi(argv[2]) == 0)
   {
-	
+	if(pcl::io::loadPCDFile<pcl::PointXYZ> (argv[1], *cloud) == -1)
+	{
+		cout << "ERROR:fail to find point cloud file!!" << endl;
+		return -1;
+	}
   }
-	  
+  else
+  {
+	  cout << "Usage:" << argv[0] << " [XYZ file name to load]" << " [mode 0 for read pcd file, 1 for read xyz file]" << endl;
+	  return -1;
+  }
+  
+  double start = GetTickCount();
+  double end(0);
 	  
   //* the data should be available in cloud
 
@@ -76,8 +88,13 @@ main (int argc, char** argv)
   mls.setSearchRadius (1);
 
   // Smooth
+  
+  cout << "Moving Least Squares Smoothing..." <<endl;
+  
   mls.process (*cloud_smoothed);
   
+  cout << "Smoothing finished!" << endl;
+
   //end of mls method
   //cloud_smoothed is the ouput smoothed cloud without normal info
 
@@ -88,8 +105,13 @@ main (int argc, char** argv)
   tree2->setInputCloud (cloud_smoothed);
   n.setInputCloud (cloud_smoothed);
   n.setSearchMethod (tree2);
-  n.setKSearch (20);
+  n.setKSearch (15);
+
+  cout << "Normal Estimation..." << endl;
+
   n.compute (*normals);
+
+  cout << "Normal Estimation finished!!" << endl;
 
   // Concatenate the XYZ and normal fields
   pcl::PointCloud<pcl::PointNormal>::Ptr cloud_with_normals (new pcl::PointCloud<pcl::PointNormal>);
@@ -107,11 +129,11 @@ main (int argc, char** argv)
   pcl::PolygonMesh triangles;
 
   // Set the maximum distance between connected points (maximum edge length)
-  gp3.setSearchRadius (10);
+  gp3.setSearchRadius (15);
 
   // Set typical values for the parameters
-  gp3.setMu (2.5);
-  gp3.setMaximumNearestNeighbors (150);
+  gp3.setMu (5);
+  gp3.setMaximumNearestNeighbors (400);
   gp3.setMaximumSurfaceAngle(M_PI/4); // 45 degrees
   gp3.setMinimumAngle(M_PI/18); // 10 degrees
   gp3.setMaximumAngle(2*M_PI/3); // 120 degrees
@@ -121,7 +143,18 @@ main (int argc, char** argv)
   // Get result
   gp3.setInputCloud (cloud_with_normals);
   gp3.setSearchMethod (tree3);
+
+  cout << "Fast triangular Meshing..." <<endl;
+
   gp3.reconstruct (triangles);
+
+  cout << "Meshing finishd" << endl;
+
+  //Calculate algorithm running time
+  end = GetTickCount();
+
+  cout << "Running algorithm takes " << (end-start)/1000 << "seconds" << endl;
+
 
   // Additional vertex information
   std::vector<int> parts = gp3.getPartIDs();
@@ -132,7 +165,11 @@ main (int argc, char** argv)
   viewer.addPointCloud(cloud_smoothed, "Cloud");
   viewer.addPolygonMesh(triangles,"Triangular Mesh");
 
-  pcl::io::saveVTKFile ("mesh.vtk", triangles);
+  string pathname(argv[1]);
+  size_t pos = pathname.find(".");
+  string outname = pathname.substr(0, pos)+".vtk";
+
+  pcl::io::saveVTKFile (outname, triangles);
 
   while(!viewer.wasStopped())
   {
